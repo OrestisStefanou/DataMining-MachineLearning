@@ -48,7 +48,7 @@ def recommend(target_id,number):
     cosine_sim_array = []#An aray (with cosine similarity and index) of target with all other keywords
     keywords_file = open("keywords.txt","r")
     for i in range(10):
-        if i != target_index:
+        if i != target_index and ids[i]!=ids[target_index]:
             keywords = keywords_file.readline()
             cosine_sim_array.append((cosine_sim(target_keywords,keywords),i))#append a tuple of cosine similarity and index because we will sort valus later
         else:
