@@ -160,8 +160,8 @@ for filename in os.listdir(business_path):
 TrainDataSet = list(zip(ids,titles,contents,categories))
 train_df = pd.DataFrame(data=TrainDataSet,columns=['id','title','content','category'])
 
-TestDataSet = list(zip(test_ids,test_titles,test_contents))
-test_df = pd.DataFrame(data=TestDataSet,columns=['id','title','content'])
+TestDataSet = list(zip(test_ids,test_titles,test_contents,test_categories))
+test_df = pd.DataFrame(data=TestDataSet,columns=['id','title','content','category'])
 
 train_df.to_csv('train_set.csv',index=False,header=False)
 test_df.to_csv('test_set.csv',index=False,header=False)
