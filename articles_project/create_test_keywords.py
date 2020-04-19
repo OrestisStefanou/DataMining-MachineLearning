@@ -94,7 +94,7 @@ for doc in docs:
     sorted_items=sort_coo(tf_idf_vector.tocoo())
 
     #extract only the top n; n here is 10
-    keywords=extract_topn_from_vector(feature_names,sorted_items,15)
+    keywords=extract_topn_from_vector(feature_names,sorted_items,20)
     keywords_list.append(list(keywords.keys()))
 
 print(keywords_list[0])
