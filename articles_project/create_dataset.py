@@ -131,6 +131,7 @@ for filename in os.listdir(entert_path):
 
     f.close()
 
+counter = 0
 #GO THROUGH EACH FILE IN business_path
 for filename in os.listdir(business_path):
     location = business_path + filename
