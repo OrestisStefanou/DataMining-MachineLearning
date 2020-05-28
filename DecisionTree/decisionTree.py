@@ -4,8 +4,7 @@ from csv import reader
 
 
 class DecisionTree:
-    def __init__(self,dataset_filename,min_size,max_depth):
-        self.max_depth = max_depth
+    def __init__(self,dataset_filename,min_size):
         self.min_size = min_size
         self.dataset = self.load_csv(dataset_filename)
         for i in range(len(self.dataset[0])):
@@ -14,7 +13,8 @@ class DecisionTree:
     
     def load_csv(self,filename):
         file = open(filename,"rt")
-        lines = reader(file,delimiter="\t")
+        #lines = reader(file,delimiter="\t")
+        lines = reader(file)
         dataset = list(lines)   #Each element of the list is a record
         return dataset
 
@@ -27,11 +27,11 @@ class DecisionTree:
                 continue
 
     #Split a dataset into k folds
-    def cross_validation_split(self,dataset,n_folds):
+    def cross_validation_split(self,dataset,folds_num):
         dataset_split = list()
         dataset_copy = list(dataset)
-        fold_size = int(len(dataset)/n_folds)
-        for i in range(n_folds):
+        fold_size = int(len(dataset)/folds_num)
+        for i in range(folds_num):
             fold = list()
             while len(fold) < fold_size:
                 index = randrange(len(dataset_copy))
@@ -50,8 +50,8 @@ class DecisionTree:
 
 
     #Evaluate the algorithm using a cross validation script
-    def evaluation(self,dataset,n_folds,*args):
-        folds = self.cross_validation_split(dataset,n_folds)
+    def evaluation(self,dataset,folds_num):
+        folds = self.cross_validation_split(dataset,folds_num)
         scores = list()
         for fold in folds:
             train_set = list(folds)
@@ -142,10 +142,7 @@ class DecisionTree:
         if not left or not right:
             node['left'] = node['right'] = self.make_terminal(left + right)
             return
-        #check for max depth
-        #if depth >=self.max_depth:
-        #    node['left'],node['right'] = self.make_terminal(left),self.make_terminal(right)
-        #    return
+
         #process left child
         if len(left)<=self.min_size or self.check_class_percentage(left):
             node['left'] = self.make_terminal(left)
@@ -189,7 +186,7 @@ class DecisionTree:
                 return node['right']
 
 
-    #Classification and Regression Tree Algorithm
+    #Create the Tree.Train it and test it
     def decision_tree(self,train,test):
         tree = self.build_tree(train)
         predictions = list()
@@ -208,10 +205,9 @@ class DecisionTree:
 
 seed(1)
 # load and prepare data
-filename = 'PhishingData.csv'
-n_folds = 5
-max_depth = 5
+filename = 'iris.csv'
+folds_num = 5
 min_size = 10
 
-decision_tree = DecisionTree(filename,min_size,max_depth)
-decision_tree.evaluate(n_folds)
+decision_tree = DecisionTree(filename,min_size)
+decision_tree.evaluate(folds_num)   #Trains and evaluates the decision tree
