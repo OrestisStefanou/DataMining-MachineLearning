@@ -14,17 +14,21 @@ import string
 #Location of train data
 TrainLocation = '/home/orestis/Desktop/GitHubRepositories/DataMining-MachineLearning/CommentsClassification/data/train.csv'
 #Location of test data
-TestLocation = '/home/orestis/Desktop/GitHubRepositories/DataMining-MachineLearning/CommentsClassification/data/test.csv'
+TestLocation = '/home/orestis/Desktop/GitHubRepositories/DataMining-MachineLearning/CommentsClassification/data/impermium_verification_labels.csv'
 
 train_df = pd.read_csv(TrainLocation,names=['Class','Date','Comment'],skiprows=1)   #Get the training data
-test_df = pd.read_csv(TestLocation,names=['Class','Date','Comment'],skiprows=1)     #Get the testing data
+test_df = pd.read_csv(TestLocation,names=['id','Class','Date','Comment','Usage'],skiprows=1)     #Get the testing data
 
 #Delete date column
 del train_df['Date']
 del test_df['Date']
+#Delete id,usage column from test data
+del test_df['id']
+del test_df['Usage']
 
 train_comments = train_df['Comment']
 test_comments = test_df['Comment']
+
 
 #PREPROCESS COMMENTS DATA
 alphabet = list(string.ascii_lowercase)
@@ -43,6 +47,7 @@ for i in range(len(train_comments)):
         if c not in alphabet:
              train_comments[i]=train_comments[i].replace(c,'')
 
+
 for i in range(len(test_comments)):
     test_comments[i]=test_comments[i].lower()
     test_comments[i] = test_comments[i].replace('-',' ')
@@ -56,13 +61,14 @@ for i in range(len(test_comments)):
              test_comments[i]=test_comments[i].replace(c,'')
     
 train_class_values = train_df['Class']
+test_class_values = test_df['Class']
 
 #Create the new data sets
 NewTrainDataSet = list(zip(train_comments,train_class_values))
-NewTestDataSet = list(test_comments)
+NewTestDataSet = list(zip(test_comments,test_class_values))
 
 new_train_df = pd.DataFrame(data=NewTrainDataSet,columns=['Comments','Classs'])
-new_test_df = pd.DataFrame(data=NewTestDataSet,columns=['Comments'])
+new_test_df = pd.DataFrame(data=NewTestDataSet,columns=['Comments','Class'])
 
 new_train_df.to_csv('train.csv',index=False,header=False)
 new_test_df.to_csv('test.csv',index=False,header=False)

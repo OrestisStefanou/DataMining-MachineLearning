@@ -11,6 +11,14 @@ from sklearn.naive_bayes import GaussianNB
 
 import pandas as pd
 
+#Function to get accuracy of the predicted results
+def accuracy_metric(actual, predicted):
+	correct = 0
+	for i in range(len(actual)):
+		if actual[i] == predicted[i]:
+			correct += 1
+	return correct / float(len(actual)) * 100.0
+
 TrainDataLocation = './train.csv'
 TestDataLocation = './test.csv'
 
@@ -21,6 +29,8 @@ train_comments = train_df['Comment']
 test_comments = test_df['Comment']
 
 train_classes=train_df['Class']
+test_classes =test_df['Class']
+
 
 #Create a Gaussian Naive Bayes model
 model = GaussianNB()
@@ -48,13 +58,5 @@ for test_comment in test_comments:
     predicted = model.predict(vector.toarray())
     predicted_classes.append(predicted)
 
-offensive = 0
-neutral = 0
-for class_value in predicted_classes:
-    if class_value==1:
-        offensive+=1
-    if class_value==0:
-        neutral+=1
-
-print('Offensive comments:',offensive)
-print('Neutral comments:',neutral)
+score = accuracy_metric(test_classes, predicted_classes)
+print('Score:',score)
