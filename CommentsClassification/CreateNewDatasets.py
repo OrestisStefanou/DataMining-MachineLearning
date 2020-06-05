@@ -70,5 +70,9 @@ NewTestDataSet = list(zip(test_comments,test_class_values))
 new_train_df = pd.DataFrame(data=NewTrainDataSet,columns=['Comments','Classs'])
 new_test_df = pd.DataFrame(data=NewTestDataSet,columns=['Comments','Class'])
 
+Dataset = NewTrainDataSet + NewTestDataSet
+df = pd.DataFrame(data=Dataset,columns=['Comments','Class']) 
+
 new_train_df.to_csv('train.csv',index=False,header=False)
 new_test_df.to_csv('test.csv',index=False,header=False)
+df.to_csv('data.csv',index=False,header=False)
