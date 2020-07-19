@@ -127,6 +127,8 @@ class DecisionTree:
         for x in classes_sum.values():
             if float(100/(len(all_class_values)/x)) > 99.0: #if 99% of records belong in the same class make it a terminal node
                 return True
+            else:
+                return False
 
     #Create a terminal node value
     def make_terminal(self,group):
